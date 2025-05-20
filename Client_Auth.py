@@ -8,9 +8,9 @@ GREEN_BOLD = "\033[1;32m"
 BLUE_BOLD = "\033[1;34m"
 RESET = "\033[0m"
 
-# Get server IP from user
+# Get server IP and port from user
 HOST = input("Enter server IP: ").strip()
-PORT = 4444
+PORT = int(input("Enter server PORT: ").strip())
 
 # Spinner animation
 loading = True
@@ -29,7 +29,7 @@ try:
     client.connect((HOST, PORT))
     loading = False
     spinner_thread.join()
-    print("\rConnected successfully!       ")
+    print("\rConnected successfully!  \nTo disconnect and close Add a command 'exit', 'quit', 'disconnect' ")
 except Exception as e:
     loading = False
     spinner_thread.join()
@@ -42,7 +42,10 @@ def send_msg(sock, msg):
 def recv_msg(sock):
     data = b""
     while not data.endswith(b"<END>"):
-        data += sock.recv(1024)
+        chunk = sock.recv(1024)
+        if not chunk:
+            break
+        data += chunk
     return data[:-5].decode()
 
 # Authentication
@@ -67,11 +70,20 @@ else:
     print(response.strip())
     current_dir = "~"
 
+# Main loop
 while True:
     prompt = f"{GREEN_BOLD}{HOST}{RESET}:{BLUE_BOLD}{current_dir}{RESET}$ "
     cmd = input(prompt).strip()
 
-    if cmd.lower().startswith("download "):
+    # Disconnect command
+    if cmd.lower() in ["exit", "quit", "disconnect", "!disconnect now"]:
+        send_msg(client, "exit")
+        print("Disconnected from server.")
+        client.close()
+        break
+
+    # Download
+    elif cmd.lower().startswith("download "):
         client.sendall(cmd.encode() + b"<END>")
         filename = cmd.split(" ", 1)[1]
         with open("downloaded_" + filename, 'wb') as f:
@@ -84,6 +96,7 @@ while True:
                 f.write(chunk)
         print("Download complete.")
 
+    # Upload
     elif cmd.lower().startswith("upload "):
         filename = cmd.split(" ", 1)[1]
         try:
@@ -101,6 +114,7 @@ while True:
         except Exception as e:
             print(f"Upload failed: {e}")
 
+    # Regular commands
     else:
         send_msg(client, cmd)
         response = recv_msg(client)
