@@ -106,17 +106,25 @@ def get_valid_port():
         except Exception as e:
             print(f"Port unavailable: {e}. Please choose another port.")
 
+def get_local_ip():
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.connect(("8.8.8.8", 80))
+            return s.getsockname()[0]
+    except:
+        return "127.0.0.1"
+
 if __name__ == "__main__":
     USERNAME = input("Set a username: ")
     PASSWORD = input("Set a password: ")
     PORT = get_valid_port()
-    HOST = '0.0.0.0'
+    HOST = get_local_ip()
 
     while True:
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
                 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                server.bind((HOST, PORT))
+                server.bind(('0.0.0.0', PORT))  # Accept from any interface
                 server.listen(1)
                 print(f"[+] Listening on {HOST}:{PORT}")
                 log_event(f"Server started on {HOST}:{PORT}")
@@ -127,4 +135,4 @@ if __name__ == "__main__":
         except Exception as e:
             log_event(f"Server error: {e}")
             print(f"[!] Server crashed: {e}. Restarting in 5 seconds...")
-            time.sleep(5)  # Wait before retrying
+            time.sleep(5)
