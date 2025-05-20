@@ -1,0 +1,5 @@
+# Standard networking and threading are built into Python, so minimal external dependencies.
+# Optional libraries listed below:
+
+colorama==0.4.6       # For colored terminal output (cross-platform)
+cryptography==42.0.5  # For optional encryption (e.g., secure connections)
