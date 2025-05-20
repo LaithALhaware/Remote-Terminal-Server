@@ -32,7 +32,7 @@ A lightweight Python-based server that allows remote control of a system's termi
 - Clone the repository or download the project files to your local machine 📂  :
 ```bash
 git clone https://github.com/LaithALhaware/Remote-Terminal-Server.git
-cd RemoteTerminalServer
+cd Remote-Terminal-Server
 ```
 
 - Install dependencies (if any):
