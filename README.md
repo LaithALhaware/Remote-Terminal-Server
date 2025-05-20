@@ -65,6 +65,16 @@ pip install -r requirements.txt
 - 👤 Run with restricted permissions
 
 
+## 📝 Output Example in server_log.txt:
+   ```bash
+[2025-05-20 15:23:01] Server started on 0.0.0.0:4444
+[2025-05-20 15:23:05] Connection from 192.168.1.12:52123
+[2025-05-20 15:23:08] User Laith authenticated from 192.168.1.12
+[2025-05-20 15:23:15] Executed command: ls -l
+[2025-05-20 15:23:20] File uploaded: notes.txt
+[2025-05-20 15:23:30] User Laith disconnected.
+   ```
+
 ## 📁 Project Structure
    ```bash
    .
@@ -73,8 +83,6 @@ pip install -r requirements.txt
    ├── README.md         # 📄 Project documentation
    └── requirements.txt  # 📦 Python dependencies
    ```
-
-
 
 ## 📝 License
 This project is licensed under the **License**. See the [LICENSE.txt](LICENSE.txt) ⚖️ file for details.
