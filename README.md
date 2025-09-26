@@ -1,5 +1,7 @@
 # 🖥️🔗 Remote Terminal Server 
 
+![Alt text](Main.png)
+
 A lightweight Python-based server that allows remote control of a system's terminal over a secure network connection. Useful for administrative tasks, scripting, automation, and remote debugging.
 
 
